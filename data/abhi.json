@@ -1,0 +1,22 @@
+{
+  "audios": [
+    {
+      "title": "Secret Audio 1",
+      "body": "lorem ipsum...",
+      "author": "mario",
+      "id": 1
+    },
+    {
+      "title": "Secret Audio 2",
+      "body": "lorem ipsum...",
+      "author": "yoshi",
+      "id": 2
+    },
+    {
+      "title": "Secret Audio 3",
+      "body": "lorem ipsum...",
+      "author": "mario",
+      "id": 3
+    }
+  ]
+}
