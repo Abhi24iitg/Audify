@@ -1,6 +1,8 @@
+import Create from "./Create";
 import Home from "./Home";
 import Navbar from "./Navbar";
-import { useState} from "react";
+import { useState } from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 function App() {
   const [mode, setmode] = useState("light");
   const [my_style, set_style] = useState({
@@ -29,15 +31,26 @@ function App() {
     }
   };
   return (
-    <div className="App">
-      <Navbar title="Audify" togglemode={togglemode} />
-      <Home
-        title="Audify"
-        my_style={my_style}
-        home_style={home_style}
-        wel_style={wel_style}
-      />
-    </div>
+    <Router>
+      <div className="App">
+        <Navbar title="Audify" togglemode={togglemode} />
+        <Routes>
+          <Route
+            exact
+            path="/"
+            element={
+              <Home
+                title="Audify"
+                my_style={my_style}
+                home_style={home_style}
+                wel_style={wel_style}
+              />
+            }
+          ></Route>
+          <Route exact path="/convert" element={<Create />}></Route>
+        </Routes>
+      </div>
+    </Router>
   );
 }
 

@@ -17,6 +17,9 @@
 .navbar h4 {
   color: aliceblue;
 }
+a {
+  text-decoration: none;
+}
 .navbar h4:hover {
   color: rgb(90, 223, 114);
 }

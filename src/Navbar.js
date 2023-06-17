@@ -4,9 +4,15 @@ const Navbar = (props) => {
   return (
     <nav className="navbar">
       <div className="left">
-        <h3>{props.title}</h3>
-        <h4>About</h4>
-        <h4>Contact</h4>
+        <a href="/">
+          <h3>{props.title}</h3>
+        </a>
+        <a href="/convert">
+          <h4>Convert</h4>
+        </a>
+        <a href="/about">
+          <h4>About Us</h4>
+        </a>
       </div>
       <div className="right">
         <div className="form-check form-switch">
