@@ -1,18 +1,19 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import "./Navbar.css";
 const Navbar = (props) => {
   return (
-    <nav className="navbar">
+    <nav className="navbar" style={props.blur}>
       <div className="left">
-        <a href="/">
+        <Link className="link" to="/">
           <h3>{props.title}</h3>
-        </a>
-        <a href="/convert">
+        </Link>
+        <Link className="link" to="/convert">
           <h4>Convert</h4>
-        </a>
-        <a href="/about">
+        </Link>
+        <Link className="link" to="/about">
           <h4>About Us</h4>
-        </a>
+        </Link>
       </div>
       <div className="right">
         <div className="form-check form-switch">

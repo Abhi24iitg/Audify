@@ -15,18 +15,21 @@ const Home = (props) => {
   };
   return (
     <>
-      <div className="home" style={props.home_style}>
-        {error && <div className="error">{error}</div>}
-        {isPending && <div>loading....</div>}
-        {audios && (
-          <Audiolist
-            audios={audios}
-            handleDelete={handleDelete}
-            wel_style={props.wel_style}
-            my_style={props.my_style}
-            title={props.title}
-          />
-        )}
+      <div style={props.blur}>
+        <div className="home" style={props.home_style}>
+          {error && <div className="error">{error}</div>}
+          {isPending && <div>loading....</div>}
+          {audios && (
+            <Audiolist
+              audios={audios}
+              handleDelete={handleDelete}
+              wel_style={props.wel_style}
+              my_style={props.my_style}
+              title={props.title}
+              popupfun={props.popupfun}
+            />
+          )}
+        </div>
       </div>
     </>
   );

@@ -1,10 +1,15 @@
+import Popup from "./Popup";
 import Create from "./Create";
 import Home from "./Home";
 import Navbar from "./Navbar";
+import About from "./About";
+import Audiodetails from "./Audiodetails";
 import { useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import NotFound from "./NotFound";
 function App() {
   const [mode, setmode] = useState("light");
+  const [popup, setpopup] = useState(false);
   const [my_style, set_style] = useState({
     color: "#3512fa",
   });
@@ -14,7 +19,14 @@ function App() {
   const [wel_style, set_wel_style] = useState({
     borderColor: "black",
   });
+  const [blur, set_blur] = useState({
+    filter: "none",
+  });
   // functions
+  const popupfun = () => {
+    setpopup(true);
+    set_blur({ filter: " blur(5px)" });
+  };
   const togglemode = () => {
     if (mode === "light") {
       setmode("dark");
@@ -30,24 +42,55 @@ function App() {
       set_wel_style({ borderColor: "rgb(108 13 13)" });
     }
   };
+
   return (
     <Router>
       <div className="App">
-        <Navbar title="Audify" togglemode={togglemode} />
         <Routes>
           <Route
             exact
             path="/"
             element={
-              <Home
-                title="Audify"
-                my_style={my_style}
-                home_style={home_style}
-                wel_style={wel_style}
-              />
+              <div>
+                <div>
+                  <Popup trigger={popup} settrigger={setpopup} setblur={set_blur}/>
+                </div>
+                <div>
+                  <Navbar title="Audify" togglemode={togglemode} blur={blur}  />
+                  <Home
+                    title="Audify"
+                    my_style={my_style}
+                    home_style={home_style}
+                    wel_style={wel_style}
+                    popupfun={popupfun}
+                    blur={blur}
+                  />
+                </div>
+              </div>
             }
           ></Route>
-          <Route exact path="/convert" element={<Create />}></Route>
+          <Route
+            exact
+            path="/convert"
+            element={
+              <div>
+                <Navbar title="Audify" togglemode={togglemode} />
+                <Create />
+              </div>
+            }
+          ></Route>
+          <Route
+            exact
+            path="/about"
+            element={
+              <div>
+                <Navbar title="Audify" togglemode={togglemode} />
+                <About />
+              </div>
+            }
+          ></Route>
+          <Route exact path="/audios/:id" element={<Audiodetails />}></Route>
+          <Route exact path="*" element={<NotFound />}></Route>
         </Routes>
       </div>
     </Router>
