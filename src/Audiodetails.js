@@ -8,7 +8,7 @@ function Audiodetails() {
     setData: setaudios,
     isPending,
     error,
-  } = useFetch("http://localhost:8000/audios");
+  } = useFetch("http://localhost:5000/audios");
 
   return (
     <div className="audio-details">

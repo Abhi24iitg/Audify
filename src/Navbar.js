@@ -8,9 +8,6 @@ const Navbar = (props) => {
         <Link className="link" to="/">
           <h3>{props.title}</h3>
         </Link>
-        <Link className="link" to="/convert">
-          <h4>Convert</h4>
-        </Link>
         <Link className="link" to="/about">
           <h4>About Us</h4>
         </Link>

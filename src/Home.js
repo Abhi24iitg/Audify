@@ -8,7 +8,7 @@ const Home = (props) => {
     setData: setaudios,
     isPending,
     error,
-  } = useFetch("http://localhost:8000/audios");
+  } = useFetch("http://localhost:5000/audios");
   const handleDelete = (id) => {
     const newAudios = audios.filter((audio) => audio.id !== id);
     setaudios(newAudios);
