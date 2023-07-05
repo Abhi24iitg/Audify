@@ -2,11 +2,15 @@ import Popup from "./popup";
 import Create from "./Create";
 import Home from "./Home";
 import Navbar from "./Navbar";
+import Signup from "./Signup";
+import Login from "./Login";
 import About from "./About";
 import Audiodetails from "./Audiodetails";
 import { useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import NotFound from "./NotFound";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   const [mode, setMode] = useState("light");
@@ -50,6 +54,8 @@ function App() {
     <Router>
       <div className="App">
         <Routes>
+          <Route exact path="/signup" element={<Signup />} />
+          <Route exact path="/login" element={<Login />} />
           <Route
             exact
             path="/"
@@ -102,6 +108,18 @@ function App() {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
+      <ToastContainer
+        position="top-center"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
     </Router>
   );
 }
