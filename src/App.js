@@ -6,6 +6,7 @@ import Signup from "./Signup";
 import Login from "./Login";
 import About from "./About";
 import Audiodetails from "./Audiodetails";
+import Audify from "./Audify";
 import { useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import NotFound from "./NotFound";
@@ -62,27 +63,23 @@ function App() {
             element={
               <div>
                 <div>
-                  <Popup
-                    trigger={popup}
-                    settrigger={setPopup}
-                    setblur={setBlur}
-                  />
-                </div>
-                <div>
                   <Navbar title="Audify" togglemode={toggleMode} blur={blur} />
-                  <Home
+                  {/* <Home
                     title="Audify"
                     my_style={myStyle}
                     home_style={homeStyle}
                     wel_style={welStyle}
                     popupfun={popupfun}
                     blur={blur}
-                  />
+                  /> */}
+                  <div>
+                    <Audify />
+                  </div>
                 </div>
               </div>
             }
           />
-          <Route
+          {/* <Route
             exact
             path="/about"
             element={
@@ -91,9 +88,9 @@ function App() {
                 <About />
               </div>
             }
-          />
-          <Route exact path="/audios/:id" element={<Audiodetails />} />
-          <Route
+          /> */}
+          {/* <Route exact path="/audios/:id" element={<Audiodetails />} /> */}
+          {/* <Route
             exact
             path="/upload"
             element={
@@ -104,7 +101,7 @@ function App() {
                 </div>
               </div>
             }
-          />
+          /> */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </div>

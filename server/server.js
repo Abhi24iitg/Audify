@@ -1,36 +1,27 @@
-const express = require("express");
-const route = require("./routes");
-const multer = require("multer");
-require("./connection");
-const bodyParser = require("body-parser");
-const cors = require("cors");
-const ffmpeg = require("fluent-ffmpeg");
+const express = require('express');
+const multer = require('multer');
+const ffmpeg = require('fluent-ffmpeg');
 const app = express();
-const upload = multer({ dest: "uploads/" }); // Set the destination folder for uploaded files
+const upload = multer({ dest: 'uploads/' });
 
-app.use(cors());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-// Define the route to handle file uploads
-app.post("/upload", upload.single("video"), (req, res) => {
-  const videoPath = req.file.path;
-  const audioPath = `${req.file.destination}/${req.file.filename}.mp3`;
+app.post('/convert', upload.single('video'), (req, res) => {
+  const { path } = req.file;
+  const outputFilename = 'output.mp3'; // Specify the output audio file name
 
-  ffmpeg(videoPath)
+  ffmpeg.setFfmpegPath("C:/Path_programs/ffmpeg.exe");
+  ffmpeg(path)
     .noVideo()
-    .toformat("mp3")
-    .save(audioPath)
-    .on("end", () => {
-      // Conversion completed
-      // You can save the audioPath to the database or perform any other necessary actions
-      res.status(200).json({ message: "File converted successfully" });
+    .save(outputFilename)
+    .on('end', () => {
+      console.log('Audio conversion completed.');
+      res.download(outputFilename); // Provide the converted audio file as a download
     })
-    .on("error", (err) => {
-      console.error("Error converting file:", err);
-      res.status(500).json({ error: "File conversion failed" });
+    .on('error', (err) => {
+      console.error('Error while converting:', err);
+      res.status(500).send('Error while converting video to audio.');
     });
 });
-app.use("/", route);
+
 app.listen(8000, () => {
-  console.log("Server is running on port 8000");
+  console.log('Server is running on port 5000');
 });
