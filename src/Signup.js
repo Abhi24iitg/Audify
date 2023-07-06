@@ -25,7 +25,7 @@ function SignIn() {
     if (!userData.name || !userData.email || !userData.password) {
       toast.warning("Please Fill the Data");
     } else {
-      const res = await fetch("http://localhost:8000/api/signup", {
+      const res = await fetch("http://localhost:5000/api/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

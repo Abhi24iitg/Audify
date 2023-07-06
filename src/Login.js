@@ -7,7 +7,7 @@ import "./Login.css";
 import { ToastContainer, toast } from "react-toastify";
 // import "react-toastify/dist/ReactToastify.css";
 
-function SignIn() {
+function SignIn({updateUser}) {
   const navigate = useNavigate();
   const [userData, setUserData] = useState({ email: "", password: "" });
   let name, value;
@@ -21,7 +21,7 @@ function SignIn() {
     if (!userData.email || !userData.password) {
       toast.warning("Please Fill the Data");
     } else {
-      const res = await fetch("http://localhost:8000/api/login", {
+      const res = await fetch("http://localhost:5000/api/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -36,9 +36,18 @@ function SignIn() {
         toast.error("Please Enter Correct Password");
         navigate("/login");
       } else if (data == "user exists") {
-        toast.success("LoggedIn Successfully");
-        localStorage.setItem("user", JSON.stringify(userData));
+        // console.log(user);
+      //  updateUser(userData);
+      localStorage.setItem("useraudify", JSON.stringify(userData))
+      toast.success("LoggedIn Successfully");
+       
+        setTimeout(() =>{ 
+          window.location.reload();
         navigate("/");
+        },1000)
+       
+        
+       
       }
     }
   };
@@ -71,7 +80,7 @@ function SignIn() {
           </form>
         </div>
       </div>
-      <ToastContainer position="top-center" />
+
     </div>
   );
 }

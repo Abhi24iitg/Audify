@@ -1,6 +1,7 @@
-import React from "react";
+import React,{useEffect} from "react";
 import { Link } from "react-router-dom";
 const Audiolist = (props) => {
+  
   return (
     <div className="audio-list">
       <div className="welcome" style={props.wel_style}>
@@ -13,25 +14,27 @@ const Audiolist = (props) => {
             Create New
           </button>
         </div>
-        {props.audios.map((audio) => (
-          <div className="Audio-preview" key={audio.id}>
+        {props.audiofiles.map((audio) => {
+          console.log(audio)
+          return(
+          <div className="Audio-preview" key={audio._id}>
             <div className="leftaudio">
-              <Link className="link" to={`/audios/${audio.id}`}>
-                <h2>{audio.title}</h2>
+              <Link className="link" to={`/audios/${audio._id}`}>
+                <h2>{audio.filename}</h2>
               </Link>
             </div>
             <div className="rightaudio">
-              <p> Created on : {audio.author}</p>
-              <p> Last Modified : {audio.author}</p>
+              {/* <p> Created by : {audio.author}</p> */}
+              {/* <p> Last Modified : {audio.author}</p>
               <p> Duration :{audio.author}</p>
-              <p> Comments : {audio.author}</p>
-              <span onClick={() => props.handleDelete(audio.id)}>
+              <p> Comments : {audio.author}</p> */}
+               <span >
                 <i className="fa-solid fa-trash-can"></i>
               </span>
             </div>
-          </div>
-        ))}
-      </div>
+          </div>)})}
+       </div>
+      
     </div>
   );
 };

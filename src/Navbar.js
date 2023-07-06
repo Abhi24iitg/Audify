@@ -1,9 +1,27 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
 import "./Navbar.css";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const Navbar = (props) => {
+
+  const navigate= useNavigate();
+  const Logout=()=>{
+    toast.success("Logged Out Successfully");
+    localStorage.removeItem("useraudify");
+   const user= JSON.parse(localStorage.getItem("useraudify"));
+   
+   setTimeout(()=>{
+    window.location.reload();
+    navigate("/login");
+   },10000);
+   
+ 
+  }
   return (
-    <nav className="navbar" style={props.blur}>
+    <>
+
+<nav className="navbar" style={props.blur}>
       <div className="left">
         <Link className="link" to="/">
           <h3>{props.title}</h3>
@@ -23,10 +41,23 @@ const Navbar = (props) => {
           />
         </div>
         <a href="/">
-          <button className="signout">Sign Out</button>
+          <button onClick={Logout} className="signout">Sign Out</button>
         </a>
       </div>
-    </nav>
+    </nav> 
+    <ToastContainer
+        position="top-center"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
+    </>
   );
 };
 

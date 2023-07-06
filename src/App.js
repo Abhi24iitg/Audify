@@ -7,13 +7,27 @@ import Login from "./Login";
 import About from "./About";
 import Audiodetails from "./Audiodetails";
 import Audify from "./Audify";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import NotFound from "./NotFound";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Audios from "./Audiofiles";
+
 
 function App() {
+const[data,setData]=useState({});
+
+
+useEffect(() => {
+    // const user_after_every_load=
+   const data =JSON.parse(localStorage.getItem("useraudify"))
+    setData(data);
+    console.log(data);
+    
+  }, []);
+ 
+ 
   const [mode, setMode] = useState("light");
   const [popup, setPopup] = useState(false);
   const [myStyle, setStyle] = useState({
@@ -33,6 +47,12 @@ function App() {
   const popupfun = () => {
     setPopup(true);
     setBlur({ filter: "blur(5px)" });
+  };
+  const updateUser = (user) => {
+    setData(user);
+    localStorage.setItem("useraudify", JSON.stringify(user));
+  
+    // console.log(user);
   };
 
   const toggleMode = () => {
@@ -56,14 +76,15 @@ function App() {
       <div className="App">
         <Routes>
           <Route exact path="/signup" element={<Signup />} />
-          <Route exact path="/login" element={<Login />} />
+          <Route exact path="/login" element={<Login updateUser={updateUser}  />} />
           <Route
             exact
             path="/"
             element={
-              <div>
+            data?
+              (<div>
                 <div>
-                  <Navbar title="Audify" togglemode={toggleMode} blur={blur} />
+                  <Navbar title="Audify" togglemode={toggleMode} blur={blur} updateUser={updateUser} />
                   {/* <Home
                     title="Audify"
                     my_style={myStyle}
@@ -72,12 +93,14 @@ function App() {
                     popupfun={popupfun}
                     blur={blur}
                   /> */}
+                  
+                
                   <div>
-                    <Audify />
+                    {/* <Audify /> */}
                   </div>
                 </div>
-              </div>
-            }
+              </div>)
+            :(<Login  />)}
           />
           {/* <Route
             exact
@@ -102,7 +125,7 @@ function App() {
               </div>
             }
           /> */}
-          <Route path="*" element={<NotFound />} />
+         
         </Routes>
       </div>
       <ToastContainer
