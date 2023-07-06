@@ -11,10 +11,7 @@ const Navbar = (props) => {
     localStorage.removeItem("useraudify");
    const user= JSON.parse(localStorage.getItem("useraudify"));
    
-   setTimeout(()=>{
-    window.location.reload();
-    navigate("/login");
-   },10000);
+   props.updateUser(user);
    
  
   }

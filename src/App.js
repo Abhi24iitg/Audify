@@ -10,15 +10,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 function App() {
-  const [data, setData] = useState({});
-
-  useEffect(() => {
-    // const user_after_every_load=
-    const data = JSON.parse(localStorage.getItem("useraudify"));
-    setData(data);
-    console.log(data);
-  }, []);
-
+  
   const [mode, setMode] = useState("light");
   const [popup, setPopup] = useState(false);
   const [myStyle, setStyle] = useState({
@@ -33,16 +25,26 @@ function App() {
   const [blur, setBlur] = useState({
     filter: "none",
   });
+  const[user,setLoginUser]=useState({});
+
+  useEffect(() => {
+    // const user_after_every_load=
+    setLoginUser(JSON.parse(localStorage.getItem('useraudify')));
+  }, []);
+  const updateUser = (user) => {
+    
+    localStorage.setItem("useraudify", JSON.stringify(user));
+    setLoginUser(user);
+    
+  };
+ 
 
   // Functions
   const popupfun = () => {
     setPopup(true);
     setBlur({ filter: "blur(5px)" });
   };
-  const updateUser = (user) => {
-    setData(user);
-    localStorage.setItem("useraudify", JSON.stringify(user));
-  };
+ 
 
   const toggleMode = () => {
     if (mode === "light") {
@@ -59,7 +61,7 @@ function App() {
       setWelStyle({ borderColor: "rgb(108, 13, 13)" });
     }
   };
-
+console.log(user);
   return (
     <Router>
       <div className="App">
@@ -74,7 +76,7 @@ function App() {
             exact
             path="/"
             element={
-              data ? (
+              user && user.email ? (
                 <div>
                   <div>
                     <Navbar
@@ -104,10 +106,46 @@ function App() {
                   </div>
                 </div>
               ) : (
-                <Login />
+                <Login updateUser={updateUser}/>
               )
             }
           />
+          <Route path='/' element={
+           user&& user.email ?(
+            <div>
+                  <div>
+                    <Navbar
+                      title="Audify"
+                      togglemode={toggleMode}
+                      blur={blur}
+                      updateUser={updateUser}
+                    />
+                    <Home
+                      title="Audify"
+                      my_style={myStyle}
+                      home_style={homeStyle}
+                      wel_style={welStyle}
+                      popupfun={popupfun}
+                      blur={blur}
+                    />
+
+                    <div>
+                     
+                        <Audify
+                          trigger={popup}
+                          settrigger={setPopup}
+                          setblur={setBlur}
+                        />
+                      
+                    </div>
+                  </div>
+                </div>
+
+           ):(
+  <Login updateUser={updateUser}/>
+           )
+
+          }/>
           <Route exact path="*" element={<NotFound />} />
         </Routes>
       </div>

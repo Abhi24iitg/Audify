@@ -7,7 +7,7 @@ import "./Login.css";
 import { ToastContainer, toast } from "react-toastify";
 // import "react-toastify/dist/ReactToastify.css";
 
-function SignIn({updateUser}) {
+const SignIn=({updateUser}) =>{
   const navigate = useNavigate();
   const [userData, setUserData] = useState({ email: "", password: "" });
   let name, value;
@@ -38,13 +38,15 @@ function SignIn({updateUser}) {
       } else if (data == "user exists") {
         // console.log(user);
       //  updateUser(userData);
-      localStorage.setItem("useraudify", JSON.stringify(userData))
+      updateUser(userData);
+      // localStorage.setItem("useraudify", JSON.stringify(userData))
       toast.success("LoggedIn Successfully");
        
-        setTimeout(() =>{ 
-          window.location.reload();
+    
+  
         navigate("/");
-        },1000)
+        console.log(userData);
+
        
         
        
@@ -59,6 +61,7 @@ function SignIn({updateUser}) {
           <form>
             <p className="formlabel">Email</p>
             <input
+             autocomplete="off"
               type="text"
               className="forminput"
               name="email"
@@ -66,6 +69,7 @@ function SignIn({updateUser}) {
             />
             <p className="formlabel">Password</p>
             <input
+             autocomplete="off"
               type="text"
               className="forminput"
               name="password"

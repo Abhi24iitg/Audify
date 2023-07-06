@@ -25,6 +25,10 @@
 .up {
   display: flex;
   justify-content: space-between;
+ 
+}
+p{
+  font-size: 20px;
 }
 .Audio-preview {
   max-width: 1200px;
@@ -43,6 +47,11 @@
   color: white;
   border: 1px solid black;
   border-radius: 10px;
+  padding: 10px;
+  box-shadow: 4px 4px 4px rgb(19, 18, 18);
+}
+.new_audio:active{
+  box-shadow: none;
 }
 .leftaudio {
   display: flex;

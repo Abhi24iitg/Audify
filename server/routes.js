@@ -94,7 +94,6 @@ router.post("/audify", upload.single("video"), async (req, res) => {
         resnew.audioArray.push({filename: outputFilename,
         title: title,author: author,comment: comment,date:Date.now()});
           await resnew.save();
-         
           console.log('old audio');
 
       }
@@ -120,20 +119,26 @@ router.post("/audify", upload.single("video"), async (req, res) => {
 });
 
 router.get('/audify', async(req, res) => {
-  fsextra.remove('audios').then(()=>{
-    console.log('audios folder deleted');
-  })
+  // fsextra.remove('audios').then(()=>{
+  //   console.log('audios folder deleted');
+  // })
   const email=req.query.email;
+  // console.log(email);
    
   const audios=await Audio.findOne({email:email});
   // console.log(audios);
   // console.log(audios);
-  const audioArray = audios.audioArray;
+  // console.log(audios);
+  if(audios)
+  {const audioArray = audios.audioArray;
   const { name } = User.findOne({ email: email });
   console.log(audios);
   // console.log(audioArray);
   res.json({ audio: audioArray });
-  console.log("Audio found");
+  console.log("Audio found");}
+  else{
+    return res.json("no audios")
+  }
 });
 router.get("/:filename", async (req, res) => {
   const { filename } = req.params;
