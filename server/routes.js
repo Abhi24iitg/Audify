@@ -2,11 +2,11 @@ const express = require("express");
 const User = require("./Models/userModel");
 const router = express.Router();
 const Audio = require("./Models/audioModel");
-const path = require('path');
-const multer=require("multer");
-const fsextra = require('fs-extra');
-const fs=require("fs");
-const ffmpeg = require('fluent-ffmpeg');
+const path = require("path");
+const multer = require("multer");
+const fsextra = require("fs-extra");
+const fs = require("fs");
+const ffmpeg = require("fluent-ffmpeg");
 
 router.post("/api/signup", async (req, res) => {
   const { name, email, password } = req.body;
@@ -31,7 +31,7 @@ router.post("/api/login", async (req, res) => {
   console.log(email_exist);
   if (email_exist) {
     const password_correct = await User.findOne({
-      email:email,
+      email: email,
       password: password,
     });
     // console.log(password_correct);
@@ -46,39 +46,34 @@ router.post("/api/login", async (req, res) => {
   }
 });
 
-
 // Set up multer storage and upload configuration
 const storage = multer.diskStorage({
-  destination: 'audios/',
+  destination: "audios/",
   filename: (req, file, cb) => {
     cb(null, Date.now() + file.originalname);
-  }
+  },
 });
 
 const upload = multer({ storage: storage });
 
-router.post('/audify', upload.single('video'), async(req, res) => {
-  
+router.post("/audify", upload.single("video"), async (req, res) => {
   const { file, body } = req;
-const email=req.query.email;
+  const email = req.query.email;
   const filename = file.filename;
   const path = file.path;
   const title = body.title;
   const author = body.author;
   const comment = body.comment;
 
-  if (!fs.existsSync(path)) {
-    console.error('File does not exist:', path);
-    return res.status(404).json('File not found.');
-  }
+
 
   const outputFilename = `${filename}_output.mp3`; 
   
   ffmpeg(path)
     .noVideo()
     .save(outputFilename)
-    .on('end', async() => {
-      console.log('Audio conversion completed.');
+    .on("end", async () => {
+      console.log("Audio conversion completed.");
 
       // Read the converted audio file from disk
       const audioData = fs.readFileSync(outputFilename);
@@ -117,18 +112,12 @@ const email=req.query.email;
   
 
       // Delete the converted audio file from disk
-     
     })
-    .on('error', (err) => {
-      console.error('Error converting video to audio:', err);
-      res.status(500).send('Error converting video to audio.');
+    .on("error", (err) => {
+      console.error("Error converting video to audio:", err);
+      res.status(500).send("Error converting video to audio.");
     });
-    
-      
-
 });
-
-
 
 router.get('/audify', async(req, res) => {
   fsextra.remove('audios').then(()=>{
@@ -138,32 +127,31 @@ router.get('/audify', async(req, res) => {
    
   const audios=await Audio.findOne({email:email});
   // console.log(audios);
-  console.log(audios)
-  const audioArray=audios.audioArray;
-  const {name}=User.findOne({email:email});
   // console.log(audios);
-    // console.log(audioArray);
-    res.json({audio:audioArray});
-    console.log('Audio found');
+  const audioArray = audios.audioArray;
+  const { name } = User.findOne({ email: email });
+  console.log(audios);
+  // console.log(audioArray);
+  res.json({ audio: audioArray });
+  console.log("Audio found");
 });
-router.get('/:filename', async(req, res) => {
+router.get("/:filename", async (req, res) => {
   const { filename } = req.params;
   console.log(filename);
-const{email}=req.query.email;
-const resnew=await Audio.findOne({email:email});
-res
+  const { email } = req.query.email;
+  const resnew = await Audio.findOne({ email: email });
+  res;
   await resnew.audioArray.findOne({ filename }, (error, audio) => {
     if (error) {
-      console.error('Error retrieving audio:', error);
-      res.status(500).send('Error retrieving audio file.');
+      console.error("Error retrieving audio:", error);
+      res.status(500).send("Error retrieving audio file.");
     } else if (!audio) {
-      res.status(404).send('Audio file not found.');
+      res.status(404).send("Audio file not found.");
     } else {
-      const audioPath = path.join(__dirname, 'audio', audio.filename);
+      const audioPath = path.join(__dirname, "audio", audio.filename);
       res.sendFile(audioPath);
     }
   });
 });
-
 
 module.exports = router;

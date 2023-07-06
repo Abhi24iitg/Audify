@@ -1,33 +1,24 @@
-import Popup from "./popup";
-import Create from "./Create";
 import Home from "./Home";
 import Navbar from "./Navbar";
 import Signup from "./Signup";
 import Login from "./Login";
-import About from "./About";
-import Audiodetails from "./Audiodetails";
 import Audify from "./Audify";
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import NotFound from "./NotFound";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Audios from "./Audiofiles";
-
 
 function App() {
-const[data,setData]=useState({});
+  const [data, setData] = useState({});
 
-
-useEffect(() => {
+  useEffect(() => {
     // const user_after_every_load=
-   const data =JSON.parse(localStorage.getItem("useraudify"))
+    const data = JSON.parse(localStorage.getItem("useraudify"));
     setData(data);
     console.log(data);
-    
   }, []);
- 
- 
+
   const [mode, setMode] = useState("light");
   const [popup, setPopup] = useState(false);
   const [myStyle, setStyle] = useState({
@@ -51,8 +42,6 @@ useEffect(() => {
   const updateUser = (user) => {
     setData(user);
     localStorage.setItem("useraudify", JSON.stringify(user));
-  
-    // console.log(user);
   };
 
   const toggleMode = () => {
@@ -76,56 +65,50 @@ useEffect(() => {
       <div className="App">
         <Routes>
           <Route exact path="/signup" element={<Signup />} />
-          <Route exact path="/login" element={<Login updateUser={updateUser}  />} />
+          <Route
+            exact
+            path="/login"
+            element={<Login updateUser={updateUser} />}
+          />
           <Route
             exact
             path="/"
             element={
-            data?
-              (<div>
+              data ? (
                 <div>
-                  <Navbar title="Audify" togglemode={toggleMode} blur={blur} updateUser={updateUser} />
-                  {/* <Home
-                    title="Audify"
-                    my_style={myStyle}
-                    home_style={homeStyle}
-                    wel_style={welStyle}
-                    popupfun={popupfun}
-                    blur={blur}
-                  /> */}
-                  <Audify/>
-                
                   <div>
-                    {/* <Audify /> */}
+                    <Navbar
+                      title="Audify"
+                      togglemode={toggleMode}
+                      blur={blur}
+                      updateUser={updateUser}
+                    />
+                    <Home
+                      title="Audify"
+                      my_style={myStyle}
+                      home_style={homeStyle}
+                      wel_style={welStyle}
+                      popupfun={popupfun}
+                      blur={blur}
+                    />
+
+                    <div>
+                      {
+                        <Audify
+                          trigger={popup}
+                          settrigger={setPopup}
+                          setblur={setBlur}
+                        />
+                      }
+                    </div>
                   </div>
                 </div>
-              </div>)
-            :(<Login  />)}
+              ) : (
+                <Login />
+              )
+            }
           />
-          {/* <Route
-            exact
-            path="/about"
-            element={
-              <div>
-                <Navbar title="Audify" togglemode={toggleMode} />
-                <About />
-              </div>
-            }
-          /> */}
-          {/* <Route exact path="/audios/:id" element={<Audiodetails />} /> */}
-          {/* <Route
-            exact
-            path="/upload"
-            element={
-              <div>
-                <Navbar title="Audify" togglemode={toggleMode} />
-                <div>
-                  <h1>Uploads Page</h1>
-                </div>
-              </div>
-            }
-          /> */}
-         
+          <Route exact path="*" element={<NotFound />} />
         </Routes>
       </div>
       <ToastContainer

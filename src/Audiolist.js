@@ -1,7 +1,17 @@
-import React,{useEffect} from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 const Audiolist = (props) => {
-  
+  const [audiofiles, setAudiofiles] = useState([]);
+  const email = JSON.parse(localStorage.getItem("user"));
+
+  useEffect(() => {
+    fetch(`http://localhost:5000/audify?email=${email}`)
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data.audio);
+        setAudiofiles(data.audio);
+      });
+  }, []);
   return (
     <div className="audio-list">
       <div className="welcome" style={props.wel_style}>
@@ -14,27 +24,27 @@ const Audiolist = (props) => {
             Create New
           </button>
         </div>
-        {props.audiofiles.map((audio) => {
-          console.log(audio)
-          return(
-          <div className="Audio-preview" key={audio._id}>
-            <div className="leftaudio">
-              <Link className="link" to={`/audios/${audio._id}`}>
-                <h2>{audio.filename}</h2>
-              </Link>
+        {audiofiles.map((audio) => {
+          console.log(audio);
+          return (
+            <div className="Audio-preview" key={audio._id}>
+              <div className="leftaudio">
+                <Link className="link" to={`/audios/${audio._id}`}>
+                  <h2>{audio.title}</h2>
+                </Link>
+              </div>
+              <div className="rightaudio">
+                <p> Created by : {audio.author}</p>
+                <p> Created on : {audio.date.slice(0, 10)}</p>
+                <p> Comments : {audio.comment}</p>
+                <span>
+                  <i className="fa-solid fa-trash-can"></i>
+                </span>
+              </div>
             </div>
-            <div className="rightaudio">
-              {/* <p> Created by : {audio.author}</p> */}
-              {/* <p> Last Modified : {audio.author}</p>
-              <p> Duration :{audio.author}</p>
-              <p> Comments : {audio.author}</p> */}
-               <span >
-                <i className="fa-solid fa-trash-can"></i>
-              </span>
-            </div>
-          </div>)})}
-       </div>
-      
+          );
+        })}
+      </div>
     </div>
   );
 };
