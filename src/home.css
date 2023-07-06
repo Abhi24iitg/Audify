@@ -46,6 +46,7 @@
 }
 .leftaudio {
   display: flex;
+  width: 140px;
   align-items: center;
   margin-left: 60px;
 }
@@ -76,6 +77,7 @@
   }
   .leftaudio {
     margin-left: 30px;
+    width: 125px;
   }
   .new_audio {
     width: 18%;
@@ -87,6 +89,7 @@
   }
   .leftaudio {
     margin-left: 18px;
+    width: 100px;
   }
   .new_audio {
     width: 20%;
