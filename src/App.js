@@ -93,7 +93,7 @@ useEffect(() => {
                     popupfun={popupfun}
                     blur={blur}
                   /> */}
-                  
+                  <Audify/>
                 
                   <div>
                     {/* <Audify /> */}

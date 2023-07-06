@@ -58,6 +58,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 router.post('/audify', upload.single('video'), async(req, res) => {
+  
   const { file, body } = req;
 const email=req.query.email;
   const filename = file.filename;
@@ -65,6 +66,12 @@ const email=req.query.email;
   const title = body.title;
   const author = body.author;
   const comment = body.comment;
+
+  if (!fs.existsSync(path)) {
+    console.error('File does not exist:', path);
+    return res.status(404).json('File not found.');
+  }
+
   const outputFilename = `${filename}_output.mp3`; 
   
   ffmpeg(path)
@@ -79,22 +86,22 @@ const email=req.query.email;
       // Set response headers to indicate file download
       res.setHeader('Content-Disposition', `attachment; filename="${outputFilename}"`);
       res.setHeader('Content-Type', 'audio/mpeg');
-      // fs.unlinkSync(outputFilename);
-      fsextra.remove('audios')
-      .then(() => {
-        console.log('Successfully deleted the audios folder.');
-      })
+     
+      const resnew= await Audio.findOne({email:email});
+     
       fsextra.remove('uploads');
-      fs.unlinkSync(outputFilename);
+      
       res.send(audioData);
       // Send the audio file as the response
-      const resnew= await Audio.findOne({email:email});
+      fs.unlinkSync(outputFilename);
       if(resnew)
       {
         resnew.audioArray.push({filename: outputFilename,
         title: title,author: author,comment: comment,date:Date.now()});
           await resnew.save();
+         
           console.log('old audio');
+
       }
       else{
       const audio = new Audio({
@@ -106,7 +113,7 @@ const email=req.query.email;
   
       // Save the audio document to MongoDB Atlas
       await audio.save()
-    console.log("new audio")}
+}
   
 
       // Delete the converted audio file from disk
@@ -124,6 +131,9 @@ const email=req.query.email;
 
 
 router.get('/audify', async(req, res) => {
+  fsextra.remove('audios').then(()=>{
+    console.log('audios folder deleted');
+  })
   const email=req.query.email;
    
   const audios=await Audio.findOne({email:email});
