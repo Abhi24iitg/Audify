@@ -1,4 +1,4 @@
-import React, { useState,useRef } from "react";
+import React, { useState, useRef } from "react";
 import "./audify.css";
 
 function Audify(props) {
@@ -8,10 +8,10 @@ function Audify(props) {
     title: "",
     comment: "",
   });
-  const input1=useRef(null);
-  const input2=useRef(null);
-  const input3=useRef(null);
-  const input4=useRef(null);
+  const input1 = useRef(null);
+  const input2 = useRef(null);
+  const input3 = useRef(null);
+  const input4 = useRef(null);
   let name, value;
   const handleData = (e) => {
     name = e.target.name;
@@ -21,7 +21,6 @@ function Audify(props) {
 
   const handleFileChange = (event) => {
     setSelectedFile(event.target.files[0]);
-    console.log(selectedFile);
   };
 
   const handleUpload = async () => {
@@ -41,10 +40,10 @@ function Audify(props) {
           body: formData,
         }
       );
-       input1.current.value="";
-       input2.current.value="";
-       input3.current.value="";
-       input4.current.value=null;
+      input1.current.value = "";
+      input2.current.value = "";
+      input3.current.value = "";
+      input4.current.value = null;
       if (response.ok) {
         const blob = await response.blob();
         const downloadUrl = URL.createObjectURL(blob);
@@ -54,7 +53,6 @@ function Audify(props) {
         link.href = downloadUrl;
         link.download = "output.mp3";
         link.click();
-        
       } else {
         console.error("Conversion failed:", response.statusText);
       }
@@ -69,17 +67,16 @@ function Audify(props) {
         <h1>The audio file will be downloaded</h1>
         <p className="_title">Title</p>
         <input
-         autocomplete="off"
+          autoComplete="off"
           className="_input"
           onChange={handleData}
           name="title"
           type="text"
           ref={input1}
-       
         />
         <p className="_author">Author</p>
         <input
-         autocomplete="off"
+          autoComplete="off"
           className="_input"
           onChange={handleData}
           name="author"
@@ -88,13 +85,12 @@ function Audify(props) {
         />
         <p className="_comment">Comment</p>
         <input
-         autocomplete="off"
+          autoComplete="off"
           className="_input"
           onChange={handleData}
           name="comment"
           type="text"
           ref={input3}
-          
         />
         <input
           className="choosefile"
@@ -102,7 +98,6 @@ function Audify(props) {
           accept="video/*"
           onChange={handleFileChange}
           ref={input4}
-         
         />
         <button
           className="convertbutton"
