@@ -10,7 +10,6 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 function App() {
-  
   const [mode, setMode] = useState("light");
   const [popup, setPopup] = useState(false);
   const [myStyle, setStyle] = useState({
@@ -25,43 +24,54 @@ function App() {
   const [blur, setBlur] = useState({
     filter: "none",
   });
-  const[user,setLoginUser]=useState({});
+  const [user, setLoginUser] = useState({});
+  const [parastyle, setparastyle] = useState({
+    fontSize: "20px",
+    fontWeight: "600",
+    color: "blueviolet",
+  });
 
   useEffect(() => {
     // const user_after_every_load=
-    setLoginUser(JSON.parse(localStorage.getItem('useraudify')));
+    setLoginUser(JSON.parse(localStorage.getItem("useraudify")));
   }, []);
   const updateUser = (user) => {
-    
     localStorage.setItem("useraudify", JSON.stringify(user));
     setLoginUser(user);
-    
   };
- 
 
   // Functions
   const popupfun = () => {
     setPopup(true);
     setBlur({ filter: "blur(5px)" });
   };
- 
 
   const toggleMode = () => {
     if (mode === "light") {
       setMode("dark");
       setStyle({ color: "white" });
-      document.body.style.backgroundColor = "rgb(74, 121, 158)";
+      document.body.style.backgroundColor = "rgb(8 68 114)";
       setHomeStyle({ borderColor: "#4fda7b" });
       setWelStyle({ borderColor: "#4fda7b" });
+      setparastyle({
+        fontSize: "20px",
+        fontWeight: "600",
+        color: "white",
+      });
     } else {
       setMode("light");
       setStyle({ color: "#3512fa" });
       document.body.style.backgroundColor = "white";
       setHomeStyle({ borderColor: "#04ba1c" });
       setWelStyle({ borderColor: "rgb(108, 13, 13)" });
+      setparastyle({
+        fontSize: "20px",
+        fontWeight: "600",
+        color: "blueviolet",
+      });
     }
   };
-console.log(user);
+  // console.log(user);
   return (
     <Router>
       <div className="App">
@@ -90,6 +100,7 @@ console.log(user);
                       my_style={myStyle}
                       home_style={homeStyle}
                       wel_style={welStyle}
+                      p_style={parastyle}
                       popupfun={popupfun}
                       blur={blur}
                     />
@@ -106,13 +117,15 @@ console.log(user);
                   </div>
                 </div>
               ) : (
-                <Login updateUser={updateUser}/>
+                <Login updateUser={updateUser} />
               )
             }
           />
-          <Route path='/' element={
-           user&& user.email ?(
-            <div>
+          <Route
+            path="/"
+            element={
+              user && user.email ? (
+                <div>
                   <div>
                     <Navbar
                       title="Audify"
@@ -130,22 +143,19 @@ console.log(user);
                     />
 
                     <div>
-                     
-                        <Audify
-                          trigger={popup}
-                          settrigger={setPopup}
-                          setblur={setBlur}
-                        />
-                      
+                      <Audify
+                        trigger={popup}
+                        settrigger={setPopup}
+                        setblur={setBlur}
+                      />
                     </div>
                   </div>
                 </div>
-
-           ):(
-  <Login updateUser={updateUser}/>
-           )
-
-          }/>
+              ) : (
+                <Login updateUser={updateUser} />
+              )
+            }
+          />
           <Route exact path="*" element={<NotFound />} />
         </Routes>
       </div>
