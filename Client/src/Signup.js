@@ -33,7 +33,7 @@ function SignIn() {
         body: JSON.stringify(userData),
       });
       const data = await res.json();
-      if (data == "user exists") {
+      if (data === "user exists") {
         toast.error("Id exists please login!");
         navigate("/login");
       } else {
@@ -50,7 +50,7 @@ function SignIn() {
           <form>
             <p className="formlabel">Name</p>
             <input
-             autocomplete="off"
+              autoComplete="off"
               type="text"
               className="forminput"
               name="name"
@@ -58,7 +58,7 @@ function SignIn() {
             />
             <p className="formlabel">Email</p>
             <input
-             autocomplete="off"
+              autoComplete="off"
               type="text"
               className="forminput"
               name="email"
@@ -66,7 +66,7 @@ function SignIn() {
             />
             <p className="formlabel">Password</p>
             <input
-             autocomplete="off"
+              autoComplete="off"
               type="text"
               className="forminput"
               name="password"
