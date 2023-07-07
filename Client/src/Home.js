@@ -10,6 +10,7 @@ const Home = (props) => {
           <Audiolist
             wel_style={props.wel_style}
             my_style={props.my_style}
+            p_style={props.p_style}
             title={props.title}
             popupfun={props.popupfun}
           />
