@@ -65,10 +65,8 @@ router.post("/audify", upload.single("video"), async (req, res) => {
   const author = body.author;
   const comment = body.comment;
 
+  const outputFilename = `${filename}_output.mp3`;
 
-
-  const outputFilename = `${filename}_output.mp3`; 
-  
   ffmpeg(path)
     .noVideo()
     .save(outputFilename)
@@ -79,36 +77,46 @@ router.post("/audify", upload.single("video"), async (req, res) => {
       const audioData = fs.readFileSync(outputFilename);
 
       // Set response headers to indicate file download
-      res.setHeader('Content-Disposition', `attachment; filename="${outputFilename}"`);
-      res.setHeader('Content-Type', 'audio/mpeg');
-     
-      const resnew= await Audio.findOne({email:email});
-     
-      fsextra.remove('uploads');
-      
+      res.setHeader(
+        "Content-Disposition",
+        `attachment; filename="${outputFilename}"`
+      );
+      res.setHeader("Content-Type", "audio/mpeg");
+
+      const resnew = await Audio.findOne({ email: email });
+
+      fsextra.remove("uploads");
+
       res.send(audioData);
       // Send the audio file as the response
       fs.unlinkSync(outputFilename);
-      if(resnew)
-      {
-        resnew.audioArray.push({filename: outputFilename,
-        title: title,author: author,comment: comment,date:Date.now()});
-          await resnew.save();
-          console.log('old audio');
+      if (resnew) {
+        resnew.audioArray.push({
+          filename: outputFilename,
+          title: title,
+          author: author,
+          comment: comment,
+          date: Date.now(),
+        });
+        await resnew.save();
+        console.log("old audio");
+      } else {
+        const audio = new Audio({
+          audioArray: [
+            {
+              filename: outputFilename,
+              title: title,
+              author: author,
+              comment: comment,
+              date: Date.now(),
+            },
+          ],
+          email: email,
+        });
 
+        // Save the audio document to MongoDB Atlas
+        await audio.save();
       }
-      else{
-      const audio = new Audio({
-        audioArray:[{filename: outputFilename,
-         title: title,author: author,comment: comment,date:Date.now()}],
-        email:email,
-      });
-    
-  
-      // Save the audio document to MongoDB Atlas
-      await audio.save()
-}
-  
 
       // Delete the converted audio file from disk
     })
@@ -118,26 +126,25 @@ router.post("/audify", upload.single("video"), async (req, res) => {
     });
 });
 
-router.get('/audify', async(req, res) => {
+router.get("/audify", async (req, res) => {
   // fsextra.remove('audios').then(()=>{
   //   console.log('audios folder deleted');
   // })
-  const email=req.query.email;
+  const email = req.query.email;
   // console.log(email);
-   
-  const audios=await Audio.findOne({email:email});
+
+  const audios = await Audio.findOne({ email: email });
   // console.log(audios);
   // console.log(audios);
   // console.log(audios);
-  if(audios)
-  {const audioArray = audios.audioArray;
-  const { name } = User.findOne({ email: email });
-  console.log(audios);
-  // console.log(audioArray);
-  res.json({ audio: audioArray });
-  console.log("Audio found");}
-  else{
-    return res.json("no audios")
+  if (audios) {
+    const audioArray = audios.audioArray;
+    console.log(audios);
+    // console.log(audioArray);
+    res.json({ audio: audioArray });
+    console.log("Audio found");
+  } else {
+    return res.json("no audios");
   }
 });
 router.get("/:filename", async (req, res) => {
@@ -145,7 +152,6 @@ router.get("/:filename", async (req, res) => {
   console.log(filename);
   const { email } = req.query.email;
   const resnew = await Audio.findOne({ email: email });
-  res;
   await resnew.audioArray.findOne({ filename }, (error, audio) => {
     if (error) {
       console.error("Error retrieving audio:", error);
@@ -158,5 +164,41 @@ router.get("/:filename", async (req, res) => {
     }
   });
 });
+router.delete("/:date", async (req, res) => {
+  const { date } = req.params;
+  const { email } = req.query;
 
+  try {
+    // Find the audio document for the given email
+    const audio = await Audio.findOne({ email });
+
+    if (!audio) {
+      console.log("No audio found for the email");
+      return res.status(404).json({ message: "No audio found for the email" });
+    }
+
+    // Find the index of the audio in the audioArray with the matching date
+    const audioIndex = audio.audioArray.findIndex(
+      (item) => item.date.toISOString() == date
+    );
+
+    if (audioIndex === -1) {
+      console.log("No audio found for the given date");
+      return res
+        .status(404)
+        .json({ message: "No audio found for the given date" });
+    }
+
+    // Remove the audio from the audioArray
+    audio.audioArray.splice(audioIndex, 1);
+
+    // Save the updated audio document
+    await audio.save();
+    console.log("Audio deleted successfully");
+    res.json({ message: "Audio deleted successfully" });
+  } catch (error) {
+    console.log("An error occurred while deleting the audio:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
 module.exports = router;
