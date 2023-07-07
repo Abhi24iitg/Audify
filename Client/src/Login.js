@@ -7,7 +7,7 @@ import "./Login.css";
 import { ToastContainer, toast } from "react-toastify";
 // import "react-toastify/dist/ReactToastify.css";
 
-const SignIn=({updateUser}) =>{
+const SignIn = ({ updateUser }) => {
   const navigate = useNavigate();
   const [userData, setUserData] = useState({ email: "", password: "" });
   let name, value;
@@ -29,27 +29,21 @@ const SignIn=({updateUser}) =>{
         body: JSON.stringify(userData),
       });
       const data = await res.json();
-      if (data == "user not found") {
+      if (data === "user not found") {
         toast.error("Please SignUp first");
         navigate("/signup");
-      } else if (data == "password incorrect") {
+      } else if (data === "password incorrect") {
         toast.error("Please Enter Correct Password");
         navigate("/login");
-      } else if (data == "user exists") {
+      } else if (data === "user exists") {
         // console.log(user);
-      //  updateUser(userData);
-      updateUser(userData);
-      // localStorage.setItem("useraudify", JSON.stringify(userData))
-      toast.success("LoggedIn Successfully");
-       
-    
-  
+        //  updateUser(userData);
+        updateUser(userData);
+        // localStorage.setItem("useraudify", JSON.stringify(userData))
+        toast.success("LoggedIn Successfully");
+
         navigate("/");
         console.log(userData);
-
-       
-        
-       
       }
     }
   };
@@ -61,7 +55,7 @@ const SignIn=({updateUser}) =>{
           <form>
             <p className="formlabel">Email</p>
             <input
-             autocomplete="off"
+              autoComplete="off"
               type="text"
               className="forminput"
               name="email"
@@ -69,7 +63,7 @@ const SignIn=({updateUser}) =>{
             />
             <p className="formlabel">Password</p>
             <input
-             autocomplete="off"
+              autoComplete="off"
               type="text"
               className="forminput"
               name="password"
@@ -84,9 +78,8 @@ const SignIn=({updateUser}) =>{
           </form>
         </div>
       </div>
-
     </div>
   );
-}
+};
 
 export default SignIn;
