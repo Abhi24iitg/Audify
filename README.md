@@ -1,7 +1,7 @@
 # Steps to run the app
 
 1.Install ffmpeg into your system.  
-link for download:[https://github.com/Abhi24iitg/audify/edit/master/README.md].  
+link for download:[https://ffmpeg.org/download.html#build-windows].  
 2.add the ffmpeg to system path after extracting files.  
 3.Now clone the repo into your system.  
 4.install the dependecies in the client and server using command "npm i".  
